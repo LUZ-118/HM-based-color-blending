@@ -6,7 +6,7 @@ using namespace cv;
 int main()
 {
     // dataset address.
-    string data_addr = "picture/color_blending_dataset/";
+    string data_addr = "image/";
 
     // load data.
     ImgPack ref, tar;
