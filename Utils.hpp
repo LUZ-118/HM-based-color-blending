@@ -9,15 +9,13 @@
 using namespace std;
 using namespace cv;
 
-
 struct ImgPack
 {
-    public:
-        Mat img;
-        Mat mask;
-        Mat mask_result;
-        vector<float> PDF;
-        vector<float> CDF;
+    Mat img;
+    Mat mask;
+    Mat mask_result;
+    vector<float> PDF;
+    vector<float> CDF;
 };
 
 void CalOverlapDF(Mat &overlap, ImgPack &src, int channel)
@@ -70,19 +68,19 @@ void MappingFunction(vector<int> &map_Array, ImgPack &ref, ImgPack &tar, int cha
     {
         for(int j=0;j<256;j++)
         {
-            if(ref.CDF[j] >= tar.CDF[i])
+            if(ref.CDF[j] > tar.CDF[i])
             {
-                if(flag == false && (j-1)>=0)
+                if(flag == false)
                 {
                     // switch on.
                     flag = true;
                     temp_x = i;
-                    temp_y = j-1;
+                    temp_y = (int)saturate_cast<uchar>(j-1);
                 }
 
                 // make sure (j-1) cannot over or under the color depth(8bits,
                 // 0-255) value by use function saturate_cast<uchar>.
-                map_Array[i]=(int)saturate_cast<uchar>(j-1); 
+                map_Array[i] = (int)saturate_cast<uchar>(j-1); 
                 break;
             }
 
@@ -92,7 +90,7 @@ void MappingFunction(vector<int> &map_Array, ImgPack &ref, ImgPack &tar, int cha
         }
     }
 
-    cout<<"tempx,y: "<<temp_x<<' '<<temp_y<<endl;
+    cout<<"tempx, y: "<<temp_x<<' '<<temp_y<<endl;
 
     // if we haven't any value can map,
     // assign the first one which we mapped(temp_y).
@@ -108,16 +106,16 @@ void MappingFunction(vector<int> &map_Array, ImgPack &ref, ImgPack &tar, int cha
         sum1 += ref.PDF[i];
         sum2 += ref.PDF[i]*i;
     }
-    map_Array[0] = sum2 / sum1;
+    map_Array[0] = (int)saturate_cast<uchar>(sum2 / sum1);
     
     // find the center of mass in range [M[255], 255].
     sum1=0, sum2=0;
-    for(int i=255; i>=map_Array[255]; i--)
+    for(int i=255; i>=map_Array[254]+1; i--)
     {
         sum1 += ref.PDF[i];
         sum2 += ref.PDF[i]*i;
     }
-    map_Array[255] = sum2 / sum1; 
+    map_Array[255] = (int)saturate_cast<uchar>(sum2 / sum1); 
 
     // check mapping function.
     int n = 0;
