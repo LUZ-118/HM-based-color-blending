@@ -16,9 +16,6 @@ int main()
     tar.mask = imread(data_addr + "result_from_target.png");
     Mat overlap = imread(data_addr + "overlap.png");
     Mat Final_Result(ref.img.size(), ref.img.type());
-    
-    // Mat copy_tar;
-    // tar.img.copyTo(copy_tar);
 
     // color space transform, RGB -> YUV.
     cvtColor(ref.img, ref.img, CV_RGB2YUV);
@@ -53,21 +50,6 @@ int main()
     imwrite(data_addr + "result/result_of_reference.png", ref.mask_result);
     imwrite(data_addr + "result/result_of_target.png", tar.mask_result);
     imwrite(data_addr + "result/result_of_Fecker.png", Final_Result);
-
-    /*// show 2 image in the same window.
-    Mat big;
-    big.create(ref.img.rows, ref.img.cols*2+20, ref.img.type());
-    Rect roi1(0, 0, ref.img.cols, ref.img.rows);
-    Rect roi2(ref.img.cols+20, 0, ref.img.cols, ref.img.rows);
-
-    Final_Result.copyTo(big(roi1));
-    copy_tar.copyTo(big(roi2));
-
-    namedWindow("result", CV_WINDOW_NORMAL);
-    moveWindow("result",0 ,0);
-    imshow("result", big);
-    waitKey();
-    */
 
     return 0;
 }
