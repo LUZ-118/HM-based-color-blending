@@ -16,8 +16,9 @@ int main()
     tar.mask = imread(data_addr + "result_from_target.png");
     Mat overlap = imread(data_addr + "overlap.png");
     Mat Final_Result(ref.img.size(), ref.img.type());
-    Mat copy_tar;
-    tar.img.copyTo(copy_tar);
+    
+    // Mat copy_tar;
+    // tar.img.copyTo(copy_tar);
 
     // color space transform, RGB -> YUV.
     cvtColor(ref.img, ref.img, CV_RGB2YUV);
