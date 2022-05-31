@@ -63,10 +63,11 @@ void MappingFunction(vector<int> &map_Array, ImgPack &ref, ImgPack &tar, int cha
     // create a switch(flag) to do that.
     bool flag = false;
     int temp_x = -100, temp_y = -100;
+    int early = 0;
     
     for(int i=0;i<256;i++)
     {
-        for(int j=0;j<256;j++)
+        for(int j=early;j<256;j++)
         {
             if(ref.CDF[j] > tar.CDF[i])
             {
@@ -80,7 +81,8 @@ void MappingFunction(vector<int> &map_Array, ImgPack &ref, ImgPack &tar, int cha
 
                 // make sure (j-1) cannot over or under the color depth(8bits,
                 // 0-255) value by use function saturate_cast<uchar>.
-                map_Array[i] = (int)saturate_cast<uchar>(j-1); 
+                map_Array[i] = (int)saturate_cast<uchar>(j-1);
+                early = (int)saturate_cast<uchar>(j);
                 break;
             }
 
