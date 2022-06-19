@@ -1,4 +1,4 @@
-#include "pastwork/Fecker2008_Demo/utils.hpp"
+#include "utils.hpp"
 
 using namespace std;
 using namespace cv;
@@ -7,7 +7,7 @@ using namespace cv;
 int main()
 {
     // dataset address.
-    string data_addr = "../../picture/color_blending_dataset1/";
+    string data_addr = "image/";
 
     // load data.
     ImgPack ref, tar;
