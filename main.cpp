@@ -1,25 +1,28 @@
-#include "utils.hpp"
+#include "pastwork/Fecker2008_Demo/utils.hpp"
 
 using namespace std;
 using namespace cv;
 
+
 int main()
 {
     // dataset address.
-    string data_addr = "image/";
+    string data_addr = "../../picture/color_blending_dataset1/";
 
     // load data.
     ImgPack ref, tar;
-    ref.img = imread(data_addr + "warped_reference.png");
-    ref.mask = imread(data_addr + "result_from_reference.png");
-    tar.img = imread(data_addr + "warped_target.png");
-    tar.mask = imread(data_addr + "result_from_target.png");
-    Mat overlap = imread(data_addr + "overlap.png");
+    ref.img = imread(data_addr + "warped_reference.png", IMREAD_COLOR);
+    ref.mask = imread(data_addr + "result_from_reference.png", IMREAD_GRAYSCALE);
+    tar.img = imread(data_addr + "warped_target.png", IMREAD_COLOR);
+    tar.mask = imread(data_addr + "result_from_target.png", IMREAD_GRAYSCALE);
+    Mat overlap = imread(data_addr + "overlap.png", IMREAD_COLOR);
     Mat Final_Result(ref.img.size(), ref.img.type());
+    Mat copy_tar;
+    tar.img.copyTo(copy_tar);
 
-    // color space transform, RGB -> YUV.
-    cvtColor(ref.img, ref.img, CV_RGB2YUV);
-    cvtColor(tar.img, tar.img, CV_RGB2YUV);
+    // color space transform, RGB -> YCbCr.
+    cvtColor(ref.img, ref.img, CV_BGR2YCrCb);
+    cvtColor(tar.img, tar.img, CV_BGR2YCrCb);
 
     vector<int> map_Array(256, 0);
 
@@ -31,15 +34,15 @@ int main()
 
         map_Array.assign(256, 0);
 
-        // mapping.
+        // find mapping function and map
         MappingFunction(map_Array, ref, tar, channel);
     }   
 
-    // color space transform, YUV -> RGB.
-    cvtColor(ref.img, ref.img, CV_YUV2RGB);
-    cvtColor(tar.img, tar.img, CV_YUV2RGB);
+    // color space transform, YCbCr -> RGB.
+    cvtColor(ref.img, ref.img, CV_YCrCb2BGR);
+    cvtColor(tar.img, tar.img, CV_YCrCb2BGR);
 
-    // image mask.
+    // mask
     ref.img.copyTo(ref.mask_result, ref.mask);
     tar.img.copyTo(tar.mask_result, tar.mask);
 
