@@ -1,4 +1,4 @@
-# HM-based-color-blending
+# HM-based-color_blending
 code for paper ["Histogram-Based Preﬁltering for Luminance and Chrominance Compensation of Multiview Video"](https://ieeexplore.ieee.org/document/4539698)(2008), Fecker et al.
 ## Citation
 
