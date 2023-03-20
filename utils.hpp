@@ -133,6 +133,7 @@ void MappingFunction(vector<int> &map_Array, ImgPack &ref, ImgPack &tar, int cha
     {
         for(int j=0;j<tar.img.cols;j++)
         {
+            if(tar.mask.at<uchar>(i, j) == 0) continue;
             tar.img.at<Vec3b>(i,j)[channel] = map_Array[(int)tar.img.at<Vec3b>(i,j)[channel]];
         }
     }
